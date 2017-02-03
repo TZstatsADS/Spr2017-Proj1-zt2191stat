@@ -1,8 +1,8 @@
 ---
 title: "Project 1"
-output: html_notebook
-    toc: true
-    toc_depth: 2
+output:
+  html_document: default
+  html_notebook: default
 ---
 
 # Step 0: check and install needed packages. Load the libraries and functions. 
@@ -47,7 +47,7 @@ source("../lib/speechFuncs.R")
 
 
 
-# Step 1: Data harvest: scrap speech URLs from <http://www.presidency.ucsb.edu/>.
+# Step 1: Data harvest: scrap speech URLs from [American Presidency Project](http://www.presidency.ucsb.edu/).
 
 Following the example of [Jerid Francom](http://francojc.github.io/web-scraping-with-rvest/), we used [Selectorgadget](http://selectorgadget.com/) to choose the links we would like to scrap. For this project, we selected all inaugural addresses of past presidents, nomination speeches of major party candidates and farewell addresses. We also included several public speeches from Donald Trump for our textual analysis of presidential speeches. 
 
@@ -63,7 +63,7 @@ inaug=inaug[-nrow(inaug),] # remove the last line, irrelevant due to error.
 ```
 
 
-# Step 2: Using speech metadata posted on <http://www.presidency.ucsb.edu/>, we prepared CSV data sets for the speeches we will scrap. 
+# Step 2: Using speech metadata posted on [American Presidency Project](http://www.presidency.ucsb.edu/), we prepared CSV data sets for the speeches we will scrap. 
 
 ```{r}
 inaug.list=read.csv("../data/inauglist.csv", stringsAsFactors = FALSE)
