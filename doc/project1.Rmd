@@ -12,7 +12,7 @@ packages.used=c("rvest", "tibble", "qdap",
                 "sentimentr", "gplots", "dplyr",
                 "tm", "syuzhet", "factoextra", 
                 "beeswarm", "scales", "RColorBrewer",
-                "RANN", "tm", "topicmodels")
+                "RANN", "tidytext", "topicmodels","wordcloud")
 
 # check packages that need to be installed.
 packages.needed=setdiff(packages.used, 
@@ -37,8 +37,9 @@ library("beeswarm")
 library("scales")
 library("RColorBrewer")
 library("RANN")
-library("tm")
+library("tidytext")
 library("topicmodels")
+library("wordcloud")
 
 source("../lib/plotstacked.R")
 source("../lib/speechFuncs.R")
@@ -104,12 +105,8 @@ for(i in seq(nrow(speech.list))) {
 
 
 
-```{r, warning= false}
-library(tm)
-library(wordcloud)
-library(RColorBrewer)
-library(dplyr)
-library(tidytext)
+```{r}
+
 
 speech.corpus <- Corpus(VectorSource(speech.list$fulltext))
 
@@ -128,7 +125,7 @@ Now we have all the texts we need, then we can do the text mining,
 
 First let's try the Wordcloud.
 
-```{r,fig.height=6, fig.width=6, message=FALSE}
+```{r,fig.height=6, fig.width=6}
 wordcloud(tdm.overall$term, tdm.overall$`sum(count)`,
           scale=c(8,0.3),
           max.words=20,
@@ -146,7 +143,7 @@ That is the general wordcloud for all inaugration speeches.
 
 
 Let's try the word frequency.
-
+First count the words usage.
 
 ```{r}
 speech_tidy <- tidy(speech.corpus)
@@ -157,6 +154,8 @@ speech_token <- speech_tidy %>%
 speech_token %>%
   count(word, sort = TRUE)
 ```
+
+Then calculate the frequency.
 
 ```{r}
 freq_inaug <- speech_token %>%
@@ -169,12 +168,12 @@ freq_inaug <- speech_token %>%
 freq_inaug
 ```
 
-That is what individual president uses words.
+That is how individual president uses words.
 
-Then try again the wordcloud for some famous presidents.
+Then try again the wordcloud for some  presidents.
 
 
-```{r,fig.height=7.5, fig.width=7.5, message=FALSE}
+```{r,fig.height=7.5, fig.width=7.5}
 wordcloud(freq_inaug$word[freq_inaug$author == "GeorgeWashington"], freq_inaug$n,
           scale=c(4.5,0.3),
           max.words=30,
@@ -188,7 +187,7 @@ wordcloud(freq_inaug$word[freq_inaug$author == "GeorgeWashington"], freq_inaug$n
 ```
 
 
-```{r,fig.height=7.5, fig.width=7.5, message=FALSE}
+```{r,fig.height=7.5, fig.width=7.5}
 wordcloud(freq_inaug$word[freq_inaug$author == "AbrahamLincoln"], freq_inaug$n,
           scale=c(4.5,0.3),
           max.words=30,
@@ -203,7 +202,7 @@ wordcloud(freq_inaug$word[freq_inaug$author == "AbrahamLincoln"], freq_inaug$n,
 
 
 
-```{r,fig.height=7.5, fig.width=7.5, message=FALSE}
+```{r,fig.height=7.5, fig.width=7.5}
 wordcloud(freq_inaug$word[freq_inaug$author == "JohnFKennedy"], freq_inaug$n,
           scale=c(4.5,0.3),
           max.words=30,
@@ -218,7 +217,7 @@ wordcloud(freq_inaug$word[freq_inaug$author == "JohnFKennedy"], freq_inaug$n,
 
 
 
-```{r,fig.height=6.5, fig.width=6.5, message=FALSE}
+```{r,fig.height=6.5, fig.width=6.5}
 wordcloud(freq_inaug$word[freq_inaug$author == "DonaldJTrump"], freq_inaug$n,
           scale=c(4.5,0.3),
           max.words=30,
@@ -245,7 +244,7 @@ And I think from the wordclouds above, we can see that there are some difference
 
 
 
-```{r,fig.height=10, fig.width=10,message=false}
+```{r,fig.height=10, fig.width=10}
 library(methods)
 library(tidyr)
 data("data_corpus_inaugural", package = "quanteda")
